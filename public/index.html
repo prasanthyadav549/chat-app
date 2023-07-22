@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- <h1>HI there </h1>
+    <div id="from_server"></div>
+    <button id="btn"></button> -->
+
+    <div>
+        Chatting... with <%= name%>
+    </div>
+
+    <input type="text" id="chat_box">
+    <button id="send">
+        send
+    </button>
+    <ul id="msg_list"></ul>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
