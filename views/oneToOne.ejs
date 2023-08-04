@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+   <h1>
+    Select the person
+   </h1>
+   
+  <ul id="all_users">
+    <%for(const user of users) {%>
+        <li class="start-chat-btn"  onclick="emitEvent('<%=user.id%>')">
+            <%=user.id%>
+            <button>start chat</button>
+        </li>
+        <%}%>
+  </ul>
+</body>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    var socket = io()
+ function emitEvent(userId) {
+    console.log('userid to emit are',userId);
+    socket.emit('oneToOneChat', {
+        receiverId: userId
+    })
+ }
+
+ socket.on('groupId', (data) => {
+       window.location.href = `/chat/${data.groupId}/${data.sender}`;
+ })
+</script>
+</html>

@@ -16,6 +16,23 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/public/index.html');
 });
 
+
+let users = [
+  {
+     id: 'prasanth@1',
+    name: 'prasanth'
+  },
+
+  {
+    id: 'smarty@1',
+    name: 'smarty'
+  },
+  {
+    id: 'hero@1',
+    name: 'hero'
+  }
+ ]
+
 io.on('connection', (socket) => {
     console.log('a user connected',socket.id);
     socket.on('disconnect', () => {
@@ -43,6 +60,30 @@ io.on('connection', (socket) => {
           })
           io.to(data.roomid).emit('msg_recvd', data);
       })
+
+      socket.on('oneToOneChat', async (data)=> {
+            console.log('oneTo',data)
+            let sender = 'yadav@123'
+            let ids = [sender,data.receiverId]
+            ids.sort()
+            let groupName = ids.join(',')
+            let group = await Group.findOne({
+                name: groupName,
+            })
+            if(group) {
+                console.log(group)  
+            }
+            else {
+               group = await Group.create({
+                 name: groupName,
+               })
+               console.log('new group created', group)
+            }
+            socket.emit('groupId',{
+              groupId: group.id,
+              sender: sender,
+            })
+      })
   });
 
   app.get('/chat/:roomid/:user', async (req,res) => {
@@ -68,6 +109,15 @@ io.on('connection', (socket) => {
             name: req.body.name,
          })
          res.redirect('/group')
+  })
+
+  app.get('/one-to-one', async (req,res)=> {
+       console.log('users are ',users);
+        res.render('oneToOne',
+          {
+            users: users
+          }
+         )
   })
 server.listen(3000, () => {
   console.log('listening on *:3000');

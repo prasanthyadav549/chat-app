@@ -37,8 +37,7 @@
        socket.emit('join_room', {
         roomid: '<%= roomid%>',
        })
-       send.addEventListener('click',()=> {
-           
+       send.addEventListener('click',()=> { 
            let msg = input.value;
            console.log("input message", msg);
            socket.emit('new_msg', {
